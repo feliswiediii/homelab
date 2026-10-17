@@ -1,0 +1,19 @@
+# terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+!*.tfvars.example
+
+# access
+kubeconfig
+*.kubeconfig
+*.pem
+*.key
+id_*
+!*.pub
+.env
+node-token
+
+# mac
+.DS_Store
