@@ -8,6 +8,11 @@ variable "ssh_public_key_path" {
   default = "~/.ssh/homelab.pub"
 }
 
+variable "ssh_private_key_path" {
+  type    = string
+  default = "~/.ssh/homelab"
+}
+
 variable "gateway" {
   type    = string
   default = "192.168.243.1"
