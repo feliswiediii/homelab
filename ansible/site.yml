@@ -65,3 +65,27 @@
         path: "{{ playbook_dir }}/kubeconfig"
         regexp: '127\.0\.0\.1'
         replace: "{{ hostvars['k3s-server'].ansible_host }}"
+
+- name: Bootstrap Flux
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    github_owner: feliswiediii
+  environment:
+    KUBECONFIG: "{{ playbook_dir }}/kubeconfig"
+    GITHUB_TOKEN: "{{ lookup('env', 'GITHUB_TOKEN') }}"
+  tasks:
+    - name: Check that GITHUB_TOKEN is set
+      ansible.builtin.assert:
+        that: lookup('env', 'GITHUB_TOKEN') | length > 0
+        fail_msg: "Run first: export GITHUB_TOKEN=$(gh auth token)"
+
+    - name: Flux bootstrap
+      ansible.builtin.command: >
+        flux bootstrap github
+        --owner={{ github_owner }}
+        --repository=homelab
+        --branch=main
+        --path=clusters/home
+        --personal
