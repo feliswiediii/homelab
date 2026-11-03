@@ -4,20 +4,20 @@ metadata:
     name: grafana-admin
 type: Opaque
 stringData:
-    admin-user: ENC[AES256_GCM,data:TR3YO4M=,iv:5vwR2S4jEhOE6J8a6NQ9QSzvacsSMbAds/U5N3fXqQ8=,tag:ueQydRp5Zrvt2HJqpGUAOA==,type:str]
-    admin-password: ENC[AES256_GCM,data:ObzcAjlkAfqftnPZiQHu,iv:mAn2BM4ry0WFekz2sKskyTsW5x8p/lKyLhIWfHu0Zl8=,tag:wbNGLMAePzjaP9qhEwQAHQ==,type:str]
+    admin-user: ENC[AES256_GCM,data:DcFqy4k=,iv:RNiu72NZeNY65wNEMG71UQczA4VO4TwqbjoIRqMvzPk=,tag:NBVLaolXddoP8ffr1M7xyA==,type:str]
+    admin-password: ENC[AES256_GCM,data:KncCggCczpJE3ThmW7F0,iv:c0D2TT74PXU/zSwnI4fRwlQMb2DqivIgK5zpq3tFF0E=,tag:W7tRaV/TLyvshmCgS8RU2w==,type:str]
 sops:
     age:
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBrWjh3N2NhQ1RKb3dCclBW
-            ZzBmbGFMT3cxaDQ5dHN0NjdjTXEvQWo1bEdrCi9IelVFNFFHVUlTSmgxaE5CMG1p
-            amdRM0F4cnN6enFDVG5HTExpUjhaVWsKLS0tIFJCS0p2OVZNa281aFNoTmVsY1Rk
-            WDlNcjU1TGN2NWZxTk1COTNhOW9meWcKUejmGTK/1jqeV/TCJoaSvOuMCdlSKcbl
-            FGkPYnbab1JrLNHLGqSM6NdUjGjKrrky4VceJgJ9bzAM86+gkvfX3w==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB1dHFJbHVSNU1XcmJRVTZP
+            Ry9xT2c2UEFGSlRFV1E1cTYzUmwyeTNiSjF3CkZWYnVGeE9MUWRvVlRBVlBERUVp
+            bnFlcGFzcWN3a21MRjlnQ1dXSUI0N1kKLS0tIGp6WnRqS3NjWTQ0SW5TcGUxUm9o
+            RGFiYXVtTXROUFM0b1VHdTZlcm9HRlkKImOKCRxKVHnIuvXHj3edJeZrJZngOLAi
+            M8yTkagDbxlpbwsjCvffJLsAtjsfKd3dr+/PQMc5BliLdVrA/CwXLQ==
             -----END AGE ENCRYPTED FILE-----
           recipient: age17gsnt4xatdxjwnjus8td52veeck68f58zky8lqtp73hq7zza7y6sklumd6
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-11-03T15:53:32Z"
-    mac: ENC[AES256_GCM,data:AWukwf7bRoirkMVQNMxoWgGDnK+tp3dUyhzKw4eWcT113w4GDHyt3xAfFQ2BAUawKXiVx6mxK07ea+p6iYKuize8u59lJZIODXdzacLeiWnJe8NgB3IWjy0XN9lsAZKR00LI3sjW4fsLxq0yskmFb85izp1qPs4XyTuQqsTTrEk=,iv:f9jOBS2h7YV1YGJt+moy2x6AmpkRrY2tlx+mfawSB/Q=,tag:3VMSgbBX8tl8x133kegR0Q==,type:str]
+    lastmodified: "2026-11-03T16:07:09Z"
+    mac: ENC[AES256_GCM,data:kMZN6fA06raTmJcjWirnFW3om4HQUzcbUmSRdkx9b1qzEtQStBPp/5/En6+Ww7ZET/ZAW27Ttwi4bdbQQk5sBjx4tyjBF8I28d/TCIcDz6ynV0AiNVvVL5Dmxd410zdKDvGJ/0lFVysHVvT14+LbLPTycfDajk7fSLL9Y5AVg9w=,iv:Ck6erAAIWGEiF5kEvAJHbcznl9Ad7IaxDk06PozT240=,tag:JZVHKr1gUkS7RanaIaLLFw==,type:str]
     version: 3.13.3
