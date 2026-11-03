@@ -7,6 +7,8 @@ resources:
   - rpc-secret.sops.yaml
   - indexer.yaml
   - api.yaml
+  - vpn-proxy-secret.sops.yaml
+  - vpn-proxy.yaml
 
 images:
   - name: eth-indexer

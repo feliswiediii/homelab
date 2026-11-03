@@ -39,6 +39,8 @@ spec:
               value: "8"
             - name: PYTHONDONTWRITEBYTECODE
               value: "1"
+            - name: HTTPS_PROXY
+              value: http://vpn-proxy:2080
           ports:
             - name: metrics
               containerPort: 9100
