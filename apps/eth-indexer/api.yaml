@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eth-api
+  labels: { app: eth-api }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: eth-api }
+  template:
+    metadata:
+      labels: { app: eth-api }
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: /metrics/
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels: { app: eth-api }
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      containers:
+        - name: api
+          image: eth-indexer
+          args: ["api"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: { name: eth-db-app, key: uri }
+            - name: PYTHONDONTWRITEBYTECODE
+              value: "1"
+          ports:
+            - name: http
+              containerPort: 8000
+          readinessProbe:
+            httpGet: { path: /readyz, port: http }
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 50m, memory: 96Mi }
+            limits: { memory: 256Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eth-api
+spec:
+  selector: { app: eth-api }
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eth-api
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: eth.192.168.243.50.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: eth-api
+                port: { name: http }

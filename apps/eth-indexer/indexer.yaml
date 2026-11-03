@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eth-indexer
+  labels: { app: eth-indexer }
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: { app: eth-indexer }
+  template:
+    metadata:
+      labels: { app: eth-indexer }
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9100"
+        prometheus.io/path: /metrics
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      containers:
+        - name: indexer
+          image: eth-indexer
+          args: ["indexer"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: { name: eth-db-app, key: uri }
+            - name: RPC_URLS
+              valueFrom:
+                secretKeyRef: { name: eth-rpc, key: RPC_URLS }
+            - name: MAX_RPS
+              value: "8"
+            - name: PYTHONDONTWRITEBYTECODE
+              value: "1"
+          ports:
+            - name: metrics
+              containerPort: 9100
+          livenessProbe:
+            httpGet: { path: /healthz, port: metrics }
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 256Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
