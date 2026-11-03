@@ -1,0 +1,63 @@
+# Grafana dashboards and alerts: http://grafana.192.168.243.50.nip.io
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: grafana
+      version: "14.3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-community
+  values:
+    # Admin credentials from encrypted secret
+    admin:
+      existingSecret: grafana-admin
+      userKey: admin-user
+      passwordKey: admin-password
+
+    # Persistent storage for settings and alerts. Use Recreate strategy to avoid PV conflicts.
+    persistence:
+      enabled: true
+      storageClassName: local-path
+      size: 1Gi
+    deploymentStrategy:
+      type: Recreate
+
+    # Data source: VictoriaMetrics (Prometheus-compatible)
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: VictoriaMetrics
+            uid: victoriametrics
+            type: prometheus
+            url: http://vmsingle.monitoring.svc:8428
+            access: proxy
+            isDefault: true
+
+    # Dashboards loaded from ConfigMaps with label grafana_dashboard: "1"
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+      resources:
+        requests: { cpu: 10m, memory: 32Mi }
+        limits: { memory: 96Mi }
+
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      hosts:
+        - grafana.192.168.243.50.nip.io
+
+    resources:
+      requests: { cpu: 50m, memory: 128Mi }
+      limits: { memory: 384Mi }
+
+    testFramework:
+      enabled: false

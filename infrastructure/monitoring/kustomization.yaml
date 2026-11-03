@@ -1,0 +1,13 @@
+# Cluster monitoring stack
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+resources:
+  - namespace.yaml
+  - repositories.yaml
+  - victoria-metrics.yaml
+  - node-exporter.yaml
+  - kube-state-metrics.yaml
+  - grafana-admin.sops.yaml
+  - grafana.yaml
+  - dashboards/eth-indexer.yaml

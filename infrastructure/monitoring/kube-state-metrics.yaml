@@ -1,0 +1,21 @@
+# Kubernetes object state: running pods, restarts, replicas, etc.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-state-metrics
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: kube-state-metrics
+      version: "8.8.x"
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  values:
+    service:
+      annotations:
+        prometheus.io/port: "8080"     # required for VictoriaMetrics scraping
+    resources:
+      requests: { cpu: 10m, memory: 32Mi }
+      limits: { memory: 128Mi }

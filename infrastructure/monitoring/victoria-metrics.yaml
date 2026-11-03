@@ -1,0 +1,28 @@
+# VictoriaMetrics: collects and stores cluster metrics.
+# Built-in scraper auto-discovers pods and services with prometheus.io/* annotations.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-metrics
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: victoria-metrics-single
+      version: "0.50.x"
+      sourceRef:
+        kind: HelmRepository
+        name: victoriametrics
+  values:
+    server:
+      fullnameOverride: vmsingle          # service name: vmsingle (port 8428)
+      retentionPeriod: 15d                # keep 15 days of history
+      persistentVolume:
+        enabled: true
+        storageClassName: local-path
+        size: 5Gi
+      resources:
+        requests: { cpu: 50m, memory: 128Mi }
+        limits: { memory: 512Mi }
+      scrape:
+        enabled: true                     # scrapes nodes, cadvisor, annotated pods and services
