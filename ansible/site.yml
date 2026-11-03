@@ -66,6 +66,21 @@
         regexp: '127\.0\.0\.1'
         replace: "{{ hostvars['k3s-server'].ansible_host }}"
 
+- name: Create flux-system namespace
+  ansible.builtin.shell: >
+    kubectl create namespace flux-system --dry-run=client -o yaml
+    | kubectl apply -f -
+  changed_when: false
+
+- name: Create sops-age secret for Flux decryption
+  ansible.builtin.shell: >
+    kubectl create secret generic sops-age -n flux-system
+    --from-file=age.agekey={{ lookup('env', 'HOME') }}/.config/sops/age/keys.txt
+    --dry-run=client -o yaml
+    | kubectl apply -f -
+  no_log: true
+  changed_when: false
+
 - name: Bootstrap Flux
   hosts: localhost
   connection: local
