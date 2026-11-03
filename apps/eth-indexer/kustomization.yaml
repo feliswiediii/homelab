@@ -13,4 +13,4 @@ resources:
 images:
   - name: eth-indexer
     newName: docker.io/feliswiedii/eth-indexer
-    newTag: latest
+    newTag: sha-f90c12296f91ee5424cc6c4ac35f7fb8ed8f50db
